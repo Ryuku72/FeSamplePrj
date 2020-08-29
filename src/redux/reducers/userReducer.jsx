@@ -1,7 +1,7 @@
 import { USER_LOGIN, USER_LOGOUT, USER_ERROR, USER_ERROR_CLR, FETCH_COLOR } from '../actions/types'
 
 const initialState = {
-    userName: "",
+    name: "",
     color: "",
     userLoggedIn: false,
     userError: false
@@ -12,8 +12,9 @@ export default function(state = initialState, action) {
         case USER_LOGIN:
             return {
                 ...state,
-                userName: action.payload,
+                name: action.payload,
                 userLoggedIn: true,
+                userError: false
             }
         case USER_LOGIN:
             return {
@@ -23,7 +24,7 @@ export default function(state = initialState, action) {
     case USER_LOGOUT:
         return { 
             ...state,
-            userName: "",
+            name: "",
             color: "",
             userLoggedIn: false,
             userError: false
@@ -31,7 +32,7 @@ export default function(state = initialState, action) {
     case USER_ERROR:
         return { 
             ...state,
-            userName: "",
+            name: "",
             userLoggedIn: false,
             userError: true
          }
