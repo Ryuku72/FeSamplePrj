@@ -1,6 +1,7 @@
 import {  FETCH_POSTS, RECIEVE_POSTS, FETCH_NEXT_POSTS, FETCH_PREV_POSTS } from '../actions/types'
 
 const initialState = {
+    postIndex: 1,
     posts: [],
     isFetchingPosts: false,
 }
@@ -8,8 +9,6 @@ const initialState = {
 export default function (state = initialState, action) {
     switch(action.type){
         case FETCH_POSTS:
-        case FETCH_NEXT_POSTS:
-        case FETCH_PREV_POSTS:
             return { ...state,
                 isFetchingPosts: true
             };
@@ -18,6 +17,16 @@ export default function (state = initialState, action) {
             posts: action.payload,
             isFetchingPosts: false
         };
+    case FETCH_NEXT_POSTS:
+        return {
+            ...state,
+            isFetchingPosts: true
+        }
+    case FETCH_PREV_POSTS:
+        return {
+            ...state,
+            isFetchingPosts: true
+        }
     default:
         return state;
     }
