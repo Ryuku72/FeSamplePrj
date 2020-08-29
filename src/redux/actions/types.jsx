@@ -1,0 +1,11 @@
+export const USER_LOGIN = 'USER_LOGIN';
+export const USER_LOGOUT = 'USER_LOGOUT';
+export const USER_ERROR = 'USER_ERROR';
+export const USER_ERROR_CLR = 'USER_ERROR_CLR'
+export const FETCH_NAME = 'FETCH_NAME';
+export const FETCH_COLOR = 'FETCH_COLOR';
+export const FETCH_POSTS = 'FETCH_POSTS';
+export const FETCH_NEXT_POSTS = 'FETCH_NEXT_POSTS';
+export const FETCH_PREV_POSTS = 'FETCH_PREV_POSTS';
+export const RECIEVE_POSTS = 'RECIEVE_POSTS'
+
