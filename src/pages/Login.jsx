@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { userLogin, userError, userClear  } from '../redux/actions/user'
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 function Login (props) {
-    const history = useHistory()
-    const location = useLocation()
+
     const dispatch = useDispatch()
+    const history = useHistory()
+    const userName = useSelector(state => state.user.name)
+    const userErr = useSelector(state => state.user.userError) 
+    console.log(userName.length)
+
 
 const [user, setUser] = useState("") 
 
@@ -27,8 +31,8 @@ function loginUser(event){
         history.push("/dashboard");
     } 
 }
-
-return (
+if (userName.length === 0) { 
+return ( 
     <div className="w-full h-screen flex items-center justify-center">
         <div className="w-1/3 border-2 border-blue-600 p-4 rounded-lg shadow-2xl">
         <form id="loginForm" className="w-full flex flex-col">
@@ -36,8 +40,7 @@ return (
         <input className="border shadow-2xl rounded-md p-2 my-2" value={user} onChange={onHandleUser}/>
         <div className="w-full flex flex-wrap items-center">
             <div className="w-2/3 px-2 text-xs font-semibold text-red-600">
-                {useSelector(state => state.user.userError) 
-                ? "#PLEASE ENTER AT LEAST 4 LETTERS" : ""}
+                {userErr ? "#PLEASE ENTER AT LEAST 4 LETTERS" : ""}
             </div>
             
         <div className="w-1/3">
@@ -47,12 +50,17 @@ return (
         </div>
         </form>
         </div>
-        
-    </div>
-)}
+        </div>
+)
+} else {
+    return (
+        <Redirect to="/dashboard" />
+       )
+}
+}
 
 const mapStateToProps = state => ({
     user: state.user
   })
 
-export default connect(mapStateToProps, { userLogin })(Login);
+export default connect(mapStateToProps)(Login);
