@@ -6,7 +6,7 @@
 30th August 2020 <br>
 https://fssampleprj.netlify.app/
 
-## `Contents`
+## Contents
 
 * [Introduction](#intro)
 * [Time Allocation](#time)
@@ -14,10 +14,10 @@ https://fssampleprj.netlify.app/
 * [Project Issues](#issues)
 * [Additional Information](#add)
 <br>
-<br>
+
 <a name="intro"></a>
 
-## `Introduction`
+## Introduction
 
 ### Specifications
 * The app has two main pages, ‘signin’ and ‘dashboard’.
@@ -47,11 +47,10 @@ https://fssampleprj.netlify.app/
 ### Stretch Goals
 * Make the app look nicer
 <br>
-<br>
 
 <a name="time"></a>
 
-## `Time Allocation`
+## Time Allocation
 Total time allocated to this project was just over 10 hours. Its hard to truly measure as the scheduling become slightly messy. I have included a breakdown below of how time was allocated in regards to the build process
 
 29th August
@@ -70,10 +69,10 @@ Total time allocated to this project was just over 10 hours. Its hard to truly m
 * 9.45pm project complete
 * 10.30pm Documentation complete and uploaded to Netlify 
 <br>
-<br>
+
 <a name="build"></a>
 
-## `Build Process`
+## Build Process
 Having recently been building a project with Redux this project on the initial wasn't too bad. The core issue was more about allocating time and just small issues like LocalStorage. The time allocation should give a clear breakdown of how the project was build but the core was the following:
 
 Redux States => Login Page => DashBoard
@@ -84,10 +83,10 @@ There are no true components in this project as I wanted to minimize time. Given
 
 In summary, most of the requirements needed I had already done in some of my other projects so this was not too difficult coping them over.
 <br>
-<br>
+
  <a name="issues"></a>
 
-## `Project Issues`
+## Project Issues
 
 No many issues, just an under estimate of how many states were need to correctly record all important information alongside using useState for toggles. There is some small loading issues that I am not happy (sometimes after loading the old information persists then flicks over to the new information).
 
@@ -95,11 +94,10 @@ As there is no real components used in this project the code does become messy a
 
 Overall a lot of the time could have been reduces by correctly planning out some of Redux states and actually using useState when needed. Besides that working from home did appear to be its own issue.
 <br>
-<br>
 
 <a name="add"></a>
 
-## `Additional Information`
+## Additional Information
 ### Tests
 * Eslint from React
 
@@ -122,7 +120,6 @@ Licenses: MIT
 * Redux-thunk
 * JavaScript
 * CSS
-<br>
 <br>
 
 ### Joshua K Bader // Ryuku72 // Bader.JoshuaK@Gmail.com
