@@ -4,7 +4,8 @@ const initialState = {
     name: "",
     color: "",
     userLoggedIn: false,
-    userError: false
+    userError: false,
+    errorText: ""
 }
 
 export default function(state = initialState, action) {
@@ -16,7 +17,7 @@ export default function(state = initialState, action) {
                 userLoggedIn: true,
                 userError: false
             }
-        case USER_LOGIN:
+        case FETCH_COLOR:
             return {
                 ...state,
                 color: action.payload,
@@ -27,14 +28,16 @@ export default function(state = initialState, action) {
             name: "",
             color: "",
             userLoggedIn: false,
-            userError: false
+            userError: true,
+            errorText: "#USER LOGGED OUT"
          }
     case USER_ERROR:
         return { 
             ...state,
             name: "",
             userLoggedIn: false,
-            userError: true
+            userError: true,
+            errorText: "#PLEASE ENTER AT LEAST 4 LETTERS"
          }
     case USER_ERROR_CLR:
         return { 

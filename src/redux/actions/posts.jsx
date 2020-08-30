@@ -15,7 +15,6 @@ export const fetchPosts = (request) => dispatch => {
 };
 
 export const fetchNextPost = nr => dispatch => {
-    console.log(nr)
     dispatch({
         type: FETCH_NEXT_POSTS,
         payload: nr
