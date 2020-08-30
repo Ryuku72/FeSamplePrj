@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { fetchPosts, fetchNextPost, fetchSinglePost } from "../redux/actions/posts";
 import { userLogin, fetchColor, userLogOut } from '../redux/actions/user'
@@ -17,6 +17,7 @@ function Dashboard(props) {
   const [user, setUser] = useState("")
   const [color, setColor] = useState("")
   const [error, setError] = useState(false)
+  const [dropToggle, setDropToggle] = useState(false)
 
   useEffect(() => {
     props.fetchPosts(number);
@@ -43,6 +44,27 @@ function Dashboard(props) {
         dispatch(fetchSinglePost(index));
     }
   }, [index]);
+
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+
+        function handleClickOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+              setDropToggle(false)
+            }
+        }
+  
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [ref]);
+  }
+
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
 
   function onHandleNext(event) {
     event.preventDefault();
@@ -76,6 +98,7 @@ function Dashboard(props) {
   function onHandleToggle(event){
       event.preventDefault()
       setUser("")
+      setToggle(false)
   }
 
   function onHandleSubmit(event){
@@ -176,38 +199,43 @@ function Dashboard(props) {
             </h1>
           </div>
           <div className="w-1/2 flex justify-end items-end px-6 text-sm text-gray-800">
+          <div ref={wrapperRef} className="relative">
+            <button className="text-2xl font-mono p-2 outline-none focus:outline-none font-semibold text-blue-600" onClick={()=>setDropToggle(!dropToggle)}>Menu</button>
+            {dropToggle ? 
+            <div className={`dropDown rounded-lg flex flex-col shadow-2xl ${themeColor()}`}>
             <button
-              className="w-24 h-8 my-1 mx-1 font-mono bg-green-400 hover:bg-green-600 hover:text-white rounded focus:outline-none shadow-2xl"
+              className="w-full h-8 my-1 font-mono bg-yellow-400 hover:bg-yellow-600 hover:text-white rounded focus:outline-none shadow-2xl"
               type="submit"
               onClick={()=>setToggle(true)}
             >
               Settings
             </button>
             <button
-              className="w-24 h-8 my-1 mx-1 font-mono bg-purple-400 hover:bg-purple-600 hover:text-white rounded focus:outline-none shadow-2xl"
+              className="w-full h-8 my-1 font-mono bg-purple-400 hover:bg-purple-600 hover:text-white rounded focus:outline-none shadow-2xl"
               type="submit" onClick={logout}
             >
               LogOut
             </button>
           </div>
+          :
+          <></>
+            }
+        </div>
+        </div>
         </div>
       </nav>
       <div className="flex flex-row" style={{ minHeight: "82vh" }}>
-        <div className="border-r-2 border-gray-600 w-1/6 py-6" >
-          {props.api.isFetchingPosts ? (
-            <div
-              className="w-full h-full flex flex-col items-center justify-center"
-            >
-              <div className="h-12 block rounded w-4/5 mx-1 my-6 p-2 bg-orange-300 border-2 border-gray-500 overflow-hidden whitespace-no-wrap text-center" style={{ textOverflow: "ellipsis" }}>
-                <h1>LOADING...</h1>
-              </div>
+        <div className="border-r-2 border-gray-600 w-1/6 p-6" >
+            <div className="flex items-center" style={{ minHeight: "5vh" }}>
+                <h1 className="text-2xl font-mono underline overflow-hidden whitespace-no-wrap" style={{ textOverflow: "ellipsis" }}>POSTS</h1>
             </div>
+            <div className="w-full flex flex-col items-start justify-center" style={{minHeight: "60vh"}}>
+          {props.api.isFetchingPosts ? (
+            <>
+              <img id='loader' src='data:image/png;base64,R0lGODlhgAAPAJEAAAAAALOzs////wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQECgAAACwAAAAAgAAPAAACo4wfooK33NKKUtF3Z8RbN/55CEiNonMaJGp1bfiaMQvBtXzTpZuradUDZmY+opA3DK6KwaQTCbU9pVHc1LrDUrfarq765Ya9u+VRzLyO12lwG10yy39zY11Jz9t/6jf5/HfXB8hGWKaHt6eYyDgo6BaH6CgJ+QhnmWWoiVnI6ddJmbkZGkgKujhplNpYafr5OooqGst66Uq7OpjbKmvbW/p7UAAAIfkEBAoAAAAsAAAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACwLAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALBYAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsIQAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACwsAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALDcAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsQgAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACxNAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALFgAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsYwAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACxuAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALG4AAAASAA8AAAIojB+iAu2AzmKvRTOrvVnftGgQF3qkIn5dpZbsSb3R+rSoObs1nPJaAQA7' alt='Loading' />
+            </>
           ) : (
-              <div className="p-2 h-full w-full">
-            <div style={{ minHeight: "5%" }}>
-                <h1 className="text-2xl font-mono m-2 underline overflow-hidden whitespace-no-wrap" style={{ textOverflow: "ellipsis" }}>POSTS</h1>
-                </div>
-                <div style={{ minHeight: "80%" }}>
+                <>
               {props.api.posts.map((result) => {
                 return (
                   <button
@@ -221,28 +249,30 @@ function Dashboard(props) {
                   </button>
                 );
               })}
-            </div>
+            </>
+             )}
+             </div>
             <div className="w-full flex items-center" style={{ minHeight: "15%" }}>
             <button
-                className="h-12 w-1/3 mr-1 rounded-lg block bg-red-300 text-lg text-center font-semibold text-gray-700 border-orange-300 border-2 hover:bg-red-500 hover:text-gray-200 overflow-hidden whitespace-no-wrap" style={{ textOverflow: "ellipsis" }}
+                className="h-12 w-1/4 mr-1 rounded-lg block bg-red-300 text-lg text-center font-semibold text-gray-700 border-orange-300 border-2 hover:bg-red-500 hover:text-gray-200 overflow-hidden whitespace-no-wrap" style={{ textOverflow: "ellipsis" }}
                 onClick={onHandlePrev}
               >
-              Load Less
+             -
               </button>
               <button
-                className="h-12 w-1/3 ml-1 rounded-lg block bg-blue-300 text-lg text-center font-semibold text-gray-700 border-gray-300 border-2 hover:bg-blue-500 hover:text-gray-200 overflow-hidden whitespace-no-wrap" style={{ textOverflow: "ellipsis" }}
+                className="h-12 w-1/4 ml-1 rounded-lg block bg-blue-300 text-lg text-center font-semibold text-gray-700 border-gray-300 border-2 hover:bg-blue-500 hover:text-gray-200 overflow-hidden whitespace-no-wrap" style={{ textOverflow: "ellipsis" }}
                 onClick={onHandleNext}
               >
-              Load More
+              +
               </button>
              
             </div>
-            </div>
-          )}
         </div>
         <div className="w-5/6 flex flex-col items-center justify-center text-gray-800">
-            {props.api.isFetchingSingle ? <div className="text-4xl">Loading...</div> :
-            <div>
+            {props.api.isFetchingSingle ?   
+            <img id='loader' src='data:image/png;base64,R0lGODlhgAAPAJEAAAAAALOzs////wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQECgAAACwAAAAAgAAPAAACo4wfooK33NKKUtF3Z8RbN/55CEiNonMaJGp1bfiaMQvBtXzTpZuradUDZmY+opA3DK6KwaQTCbU9pVHc1LrDUrfarq765Ya9u+VRzLyO12lwG10yy39zY11Jz9t/6jf5/HfXB8hGWKaHt6eYyDgo6BaH6CgJ+QhnmWWoiVnI6ddJmbkZGkgKujhplNpYafr5OooqGst66Uq7OpjbKmvbW/p7UAAAIfkEBAoAAAAsAAAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACwLAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALBYAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsIQAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACwsAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALDcAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsQgAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACxNAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALFgAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsYwAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACxuAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALG4AAAASAA8AAAIojB+iAu2AzmKvRTOrvVnftGgQF3qkIn5dpZbsSb3R+rSoObs1nPJaAQA7' alt='Loading'/> 
+            :
+            <>
         {props.api.post.map((result) => {
                 return (
                     <div key={result.id} className="w-full flex justify-center">
@@ -253,7 +283,7 @@ function Dashboard(props) {
                     </div>
                 )
                 })}
-                </div>
+                </>
 }
         </div>
       </div>
