@@ -1,15 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { fetchPosts } from '../redux/actions/posts'
+import { fetchPosts, fetchNextPost } from '../redux/actions/posts'
 
 function Dashboard(props) {
-  
-  useEffect(() => {
-      props.fetchPosts()
-  }, [])
+const dispatch = useDispatch()
+const history = useHistory()
+console.log(props.api.postIndex)
+let postNr = useSelector(state => state.api.postIndex)
 
-  const postInformation = useSelector(state => state.posts)
+const [number, setNumber] = useState(1)
+
+  useEffect(() => {
+      props.fetchPosts(number)
+  }, [props.api.postIndex])
+
+  function onHandleNext(event) {
+    event.preventDefault()
+    setNumber(number + 1)
+    dispatch(fetchNextPost(number))
+  }
 
   return (
     <div style={{minHeight:"100vh"}}>
@@ -38,15 +48,27 @@ function Dashboard(props) {
       </nav>
 <div className="flex flex-row" style={{minHeight:"82vh"}}>
 <div className="border-r-2 border-gray-600 w-1/6 py-6">
+
+
+{props.api.isFetchingPosts ?
+    <div className="w-full flex flex-col items-center justify-center" style={{height:"85%"}}>
+    <div className="h-12 block text-left rounded w-4/5 mx-1 my-6 p-2 bg-orange-300 border-2 border-gray-500 overflow-hidden whitespace-no-wrap">
+    <h1>LOADING...</h1>
+    </div>
+</div>
+
+:
+
 <div className="w-full flex flex-col items-center justify-center" style={{height:"85%"}}>
-{props.posts.posts.map((result,index) => {
+{props.api.posts.map((result) => {
 return (
-<button className="h-12 block text-left rounded w-4/5 m-1 p-2 bg-gray-200 border-2 border-gray-500 overflow-hidden whitespace-no-wrap hover:bg-orange-300 hover:text-white capitalize" key={index} style={{textOverflow: "ellipsis"}} value={result.id}>{result.id}. {result.title}</button>
+<button className="h-12 block text-left rounded w-4/5 m-1 p-2 bg-gray-200 border-2 border-gray-500 overflow-hidden whitespace-no-wrap hover:bg-orange-300 hover:text-white capitalize" key={result.id} style={{textOverflow: "ellipsis"}} value={result.id}>{result.id}. {result.title}</button>
 )
 })}
 </div>
+}
 <div className="w-full flex items-center justify-center" style={{height:"15%"}}>
-<button className="h-12 w-10/12 rounded block bg-green-300 text-xl font-semibold text-gray-700 border-blue-300 border-2 hover:bg-green-500 hover:text-gray-200 ">Load More</button>
+<button className="h-12 w-10/12 rounded block bg-green-300 text-xl font-semibold text-gray-700 border-blue-300 border-2 hover:bg-green-500 hover:text-gray-200" onClick={onHandleNext}>Load More</button>
 </div>
 
 </div>
@@ -55,7 +77,6 @@ return (
 </div>
 </div>
       
-
       <footer className="flex flex-wrap border-t-2 border-gray-600 bg-gray-300" style={{height:"8vh"}}> </footer>
     </div>
   );
@@ -63,7 +84,7 @@ return (
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  posts: state.posts
+  api: state.api
 });
 
 export default connect(mapStateToProps, { fetchPosts })(Dashboard);
