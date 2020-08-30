@@ -1,10 +1,12 @@
-import {  FETCH_POSTS, RECIEVE_POSTS, FETCH_NEXT_POSTS, FETCH_PREV_POSTS } from '../actions/types'
+import {  FETCH_POSTS, RECIEVE_POSTS, FETCH_NEXT_POSTS, FETCH_SINGLE_POST, RECIEVE_SINGLE_POST } from '../actions/types'
 
 const initialState = {
     posts: [],
-    postIndex: 1,
-    postId: 1,
+    post: [],
+    postIndex: "",
+    postId: "",
     isFetchingPosts: false,
+    isFetchingSingle: false
 }
 
 export default function (state = initialState, action) {
@@ -12,7 +14,6 @@ export default function (state = initialState, action) {
         case FETCH_POSTS:
             return { 
                 ...state,
-                postIndex: state.postIndex,
                 isFetchingPosts: true
             };
     case RECIEVE_POSTS:
@@ -24,13 +25,20 @@ export default function (state = initialState, action) {
     case FETCH_NEXT_POSTS:
         return {
             ...state,
-            postIndex: state.postId + action.payload,
+            postIndex: action.payload,
         }
-    case FETCH_PREV_POSTS:
-        return {
+    case FETCH_SINGLE_POST:
+        return { 
             ...state,
-            postId: state.postId - action.payload,
-        }
+            postId: action.payload,
+            isFetchingSingle: true
+        };
+    case RECIEVE_SINGLE_POST:
+        return { 
+            ...state,
+            post: [action.payload],
+            isFetchingSingle: false
+        };
     default:
         return state;
     }
