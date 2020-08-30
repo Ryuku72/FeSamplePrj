@@ -1,4 +1,4 @@
-import { USER_LOGIN, FETCH_COLOR, USER_ERROR, USER_ERROR_CLR, USER_LOGOUT } from './types'
+import { USER_LOGIN, FETCH_COLOR, USER_ERROR, USER_ERROR_CLR, USER_LOGOUT, USER_LOADED } from './types'
 
 export const userLogin = (data) => {
     return {
@@ -29,5 +29,11 @@ export const userClear = () => {
 export const userLogOut = () => {
     return {
         type: USER_LOGOUT
+    }
+}
+
+export const userLoading = () => {
+    return {
+        type: USER_LOADED
     }
 }

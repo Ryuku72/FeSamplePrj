@@ -1,11 +1,12 @@
-import { USER_LOGIN, USER_LOGOUT, USER_ERROR, USER_ERROR_CLR, FETCH_COLOR } from '../actions/types'
+import { USER_LOGIN, USER_LOGOUT, USER_ERROR, USER_ERROR_CLR, FETCH_COLOR, USER_LOADED } from '../actions/types'
 
 const initialState = {
     name: "",
     color: "",
     userLoggedIn: false,
     userError: false,
-    errorText: ""
+    errorText: "",
+    userLoading: false,
 }
 
 export default function(state = initialState, action) {
@@ -15,7 +16,13 @@ export default function(state = initialState, action) {
                 ...state,
                 name: action.payload,
                 userLoggedIn: true,
-                userError: false
+                userError: false,
+                userLoading: true
+            }
+        case USER_LOADED:
+            return {
+                ...state,
+                userLoading: false
             }
         case FETCH_COLOR:
             return {

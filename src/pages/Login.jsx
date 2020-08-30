@@ -9,7 +9,7 @@ function Login(props) {
   const userName = useSelector((state) => state.user.name);
   const userErr = useSelector((state) => state.user.userError);
   const errText = useSelector((state) => state.user.errorText)
-
+  const userLoad = useSelector((state) => state.user.userLoading)
   const [user, setUser] = useState("");
 
   function onHandleUser(event) {
@@ -38,6 +38,19 @@ function Login(props) {
   if (userName.length === 0) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
+          {userLoad ? 
+          <div class="sk-cube-grid">
+          <div class="sk-cube sk-cube1"></div>
+          <div class="sk-cube sk-cube2"></div>
+          <div class="sk-cube sk-cube3"></div>
+          <div class="sk-cube sk-cube4"></div>
+          <div class="sk-cube sk-cube5"></div>
+          <div class="sk-cube sk-cube6"></div>
+          <div class="sk-cube sk-cube7"></div>
+          <div class="sk-cube sk-cube8"></div>
+          <div class="sk-cube sk-cube9"></div>
+        </div>
+        :
         <div className="w-1/3 border-2 border-blue-600 p-4 rounded-lg shadow-2xl">
           <form id="loginForm" className="w-full flex flex-col">
             <label className="text-lg">Please Login</label>
@@ -70,6 +83,7 @@ function Login(props) {
             </div>
           </form>
         </div>
+  }
       </div>
     );
   } else {

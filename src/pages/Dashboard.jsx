@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { fetchPosts, fetchNextPost, fetchSinglePost } from "../redux/actions/posts";
-import { userLogin, fetchColor, userLogOut } from '../redux/actions/user'
+import { userLogin, fetchColor, userLogOut, userLoading } from '../redux/actions/user'
 import { Redirect, useHistory } from "react-router-dom";
 
 function Dashboard(props) {
@@ -20,6 +20,7 @@ function Dashboard(props) {
   const [dropToggle, setDropToggle] = useState(false)
 
   useEffect(() => {
+    dispatch(userLoading())
     props.fetchPosts(number);
     props.fetchSinglePost(index);
     return () => {
@@ -35,7 +36,6 @@ function Dashboard(props) {
         dispatch(fetchNextPost(number));
         props.fetchPosts(number);
     }
-
   }, [number]);
 
   useEffect(() => {
@@ -146,7 +146,7 @@ function Dashboard(props) {
 
   if (userName.length !== 0) { 
   return (
-    <div className="relative" style={{ minHeight: "100vh" }}>
+    <div className="relative" style={{height: "100vh" }}>
         {toggle ? 
       <div className="w-screen h-screen flex justify-center items-center absolute top-0">
           <div className={`z-50 xl:w-1/3 xs:w-1/2 relative border-2 border-gray-700  p-6 rounded-lg ${themeColor()}`} style={{height: "40vh"}}>
@@ -163,7 +163,7 @@ function Dashboard(props) {
                 </div>
                 <div className="w-full flex justify-center">
                 <label className="w-1/4  text-2xl font-semibold flex items-center justify-center">Color: </label>
-                <select id="colorInput" className="w-1/2 border shadow-2xl rounded-md p-2 my-2" name="colors" id="colors" onChange={onHandleColor} placeholder={userColor}>
+                <select id="colorInput" className="w-1/2 border shadow-2xl rounded-md p-2 my-2" onChange={onHandleColor} placeholder={userColor}>
                 <option value="">None</option>
                 <option value="Red">Red</option>
                 <option value="Orange">Orange</option>
@@ -229,7 +229,7 @@ function Dashboard(props) {
             <div className="flex items-center" style={{ minHeight: "5vh" }}>
                 <h1 className="text-2xl font-mono underline overflow-hidden whitespace-no-wrap" style={{ textOverflow: "ellipsis" }}>POSTS</h1>
             </div>
-            <div className="w-full flex flex-col items-start justify-center" style={{minHeight: "60vh"}}>
+            <div className="w-full flex flex-col items-start justify-center" style={{height: "60vh"}}>
           {props.api.isFetchingPosts ? (
             <>
               <img id='loader' src='data:image/png;base64,R0lGODlhgAAPAJEAAAAAALOzs////wAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQECgAAACwAAAAAgAAPAAACo4wfooK33NKKUtF3Z8RbN/55CEiNonMaJGp1bfiaMQvBtXzTpZuradUDZmY+opA3DK6KwaQTCbU9pVHc1LrDUrfarq765Ya9u+VRzLyO12lwG10yy39zY11Jz9t/6jf5/HfXB8hGWKaHt6eYyDgo6BaH6CgJ+QhnmWWoiVnI6ddJmbkZGkgKujhplNpYafr5OooqGst66Uq7OpjbKmvbW/p7UAAAIfkEBAoAAAAsAAAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACwLAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALBYAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsIQAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACwsAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALDcAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsQgAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACxNAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALFgAAAAHAA8AAAIIhI+py+0PoywAIfkEBAoAAAAsYwAAAAcADwAAAgiEj6nL7Q+jLAAh+QQECgAAACxuAAAABwAPAAACCISPqcvtD6MsACH5BAQKAAAALG4AAAASAA8AAAIojB+iAu2AzmKvRTOrvVnftGgQF3qkIn5dpZbsSb3R+rSoObs1nPJaAQA7' alt='Loading' />
@@ -287,7 +287,6 @@ function Dashboard(props) {
 }
         </div>
       </div>
-
       <footer
         className={`flex flex-wrap justify-end items-end border-t-2 border-gray-600 ${themeColor()}`}
         style={{ minHeight: "8vh" }}
