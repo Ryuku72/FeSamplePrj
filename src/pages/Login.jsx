@@ -15,7 +15,6 @@ const [user, setUser] = useState("")
 
 function onHandleUser(event) {
     event.preventDefault()
-    console.log(event.target.value.trim().toLowerCase())
     setUser(event.target.value.trim().toLowerCase())
     dispatch(userClear())
 }
