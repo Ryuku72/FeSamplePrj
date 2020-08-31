@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { userLogin, userError, userClear } from "../redux/actions/user";
+import { userLogin, userError, userClear, logoutRecieved } from "../redux/actions/user";
 import { useHistory, Redirect } from "react-router-dom";
 
 function Login(props) {
@@ -11,6 +11,15 @@ function Login(props) {
   const errText = useSelector((state) => state.user.errorText)
   const userLoad = useSelector((state) => state.user.userLoading)
   const [user, setUser] = useState("");
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(logoutRecieved())
+    },500)
+    return () => {
+      dispatch(logoutRecieved())
+    }
+  },[])
 
   function onHandleUser(event) {
     event.preventDefault();
@@ -24,8 +33,8 @@ function Login(props) {
     if (user.length < 4) {
       dispatch(userError());
     } else {
-      dispatch(userLogin(user));
-      history.push("/dashboard");
+        dispatch(userLogin(user));
+        history.push("/dashboard");
     }
   }
 
@@ -39,16 +48,16 @@ function Login(props) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
           {userLoad ? 
-          <div class="sk-cube-grid">
-          <div class="sk-cube sk-cube1"></div>
-          <div class="sk-cube sk-cube2"></div>
-          <div class="sk-cube sk-cube3"></div>
-          <div class="sk-cube sk-cube4"></div>
-          <div class="sk-cube sk-cube5"></div>
-          <div class="sk-cube sk-cube6"></div>
-          <div class="sk-cube sk-cube7"></div>
-          <div class="sk-cube sk-cube8"></div>
-          <div class="sk-cube sk-cube9"></div>
+          <div className="sk-cube-grid">
+          <div className="sk-cube sk-cube1"></div>
+          <div className="sk-cube sk-cube2"></div>
+          <div className="sk-cube sk-cube3"></div>
+          <div className="sk-cube sk-cube4"></div>
+          <div className="sk-cube sk-cube5"></div>
+          <div className="sk-cube sk-cube6"></div>
+          <div className="sk-cube sk-cube7"></div>
+          <div className="sk-cube sk-cube8"></div>
+          <div className="sk-cube sk-cube9"></div>
         </div>
         :
         <div className="w-1/3 border-2 border-blue-600 p-4 rounded-lg shadow-2xl">

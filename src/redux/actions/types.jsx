@@ -1,5 +1,6 @@
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
+export const LOGOUT_RECIEVED = 'LOGOUT_RECIEVED';
 export const USER_ERROR = 'USER_ERROR';
 export const USER_ERROR_CLR = 'USER_ERROR_CLR'
 export const USER_LOADED = 'USER_LOADED';

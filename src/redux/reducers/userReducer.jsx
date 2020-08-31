@@ -1,4 +1,4 @@
-import { USER_LOGIN, USER_LOGOUT, USER_ERROR, USER_ERROR_CLR, FETCH_COLOR, USER_LOADED } from '../actions/types'
+import { USER_LOGIN, USER_LOGOUT, USER_ERROR, USER_ERROR_CLR, FETCH_COLOR, USER_LOADED, LOGOUT_RECIEVED} from '../actions/types'
 
 const initialState = {
     name: "",
@@ -36,7 +36,13 @@ export default function(state = initialState, action) {
             color: "",
             userLoggedIn: false,
             userError: true,
+            userLoading: true,
             errorText: "#USER LOGGED OUT"
+         }
+    case LOGOUT_RECIEVED:
+         return {
+             ...state,
+             userLoading: false
          }
     case USER_ERROR:
         return { 
