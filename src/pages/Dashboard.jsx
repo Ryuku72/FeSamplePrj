@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { fetchPosts, fetchNextPost, fetchSinglePost } from "../redux/actions/posts";
+import { fetchPosts, fetchSinglePost } from "../redux/actions/posts";
 import { userLogin, fetchColor, userLogOut, userLoading } from '../redux/actions/user'
 import { Redirect, useHistory } from "react-router-dom";
 
@@ -21,29 +21,13 @@ function Dashboard(props) {
 
   useEffect(() => {
     dispatch(userLoading())
-    props.fetchPosts(number);
-    props.fetchSinglePost(index);
+    props.fetchPosts(1);
+    props.fetchSinglePost(1);
     return () => {
-        props.fetchPosts(number);
-        props.fetchSinglePost(index);
+        props.fetchPosts(1);
+        props.fetchSinglePost(1);
     }
   }, []);
-
-  useEffect(() => {
-    dispatch(fetchNextPost(number));
-    props.fetchPosts(number);
-    return () => {
-        dispatch(fetchNextPost(number));
-        props.fetchPosts(number);
-    }
-  }, [number]);
-
-  useEffect(() => {
-    dispatch(fetchSinglePost(index));
-    return () => {
-        dispatch(fetchSinglePost(index));
-    }
-  }, [index]);
 
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -70,19 +54,29 @@ function Dashboard(props) {
     event.preventDefault();
     if (number < 10) {
       setNumber(number + 1);
+      props.fetchPosts(number + 1)
     } else {
       setNumber(1);
-    }
+      props.fetchPosts(1)
+    };
   }
 
   function onHandlePrev(event) {
     event.preventDefault();
     if (number > 1) {
       setNumber(number - 1);
+      props.fetchPosts(number - 1)
     } else {
       setNumber(10);
+      props.fetchPosts(10)
     }
   }
+
+  function onHandleSinglePost(event){
+    event.preventDefault()
+    setIndex(event.target.value)
+    props.fetchSinglePost(event.target.value);
+}
 
   function onHandleUser(event){
       event.preventDefault()
@@ -110,11 +104,6 @@ function Dashboard(props) {
         dispatch(fetchColor(color))
         setToggle(false)
     }    
-  }
-
-  function onHandleSinglePost(event){
-      event.preventDefault()
-      setIndex(event.target.value)
   }
 
   async function logout(event) {
