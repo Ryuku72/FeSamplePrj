@@ -20,6 +20,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     dispatch(userLoading())
+    setUser(props.user.name)
     props.fetchPosts(1);
     props.fetchSinglePost(1);
     return () => {
