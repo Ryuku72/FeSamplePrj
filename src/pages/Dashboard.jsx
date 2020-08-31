@@ -12,7 +12,6 @@ function Dashboard(props) {
   const userColor = useSelector(state => state.user.color)
 
   const [number, setNumber] = useState(1);
-  const [index, setIndex] = useState(1)
   const [toggle, setToggle] = useState(false)
   const [user, setUser] = useState("")
   const [color, setColor] = useState("")
@@ -31,17 +30,13 @@ function Dashboard(props) {
 
   function useOutsideAlerter(ref) {
     useEffect(() => {
-
         function handleClickOutside(event) {
             if (ref.current && !ref.current.contains(event.target)) {
               setDropToggle(false)
             }
         }
-  
-        // Bind the event listener
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
-            // Unbind the event listener on clean up
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [ref]);
@@ -49,6 +44,22 @@ function Dashboard(props) {
 
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
+
+  function useOutsideModule(ref) {
+    useEffect(() => {
+        function handleOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+              setToggle(false)
+            }
+        }
+        document.addEventListener("mousedown", handleOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleOutside);
+        };
+    }, [ref]);
+  }
+  const moduleRef = useRef(null)
+  useOutsideModule(moduleRef)
 
   function onHandleNext(event) {
     event.preventDefault();
@@ -74,7 +85,6 @@ function Dashboard(props) {
 
   function onHandleSinglePost(event){
     event.preventDefault()
-    setIndex(event.target.value)
     props.fetchSinglePost(event.target.value);
 }
 
@@ -138,7 +148,7 @@ function Dashboard(props) {
     <div className="relative" style={{height: "100vh" }}>
         {toggle ? 
       <div className="w-screen h-screen flex justify-center items-center absolute top-0">
-          <div className={`z-50 xl:w-1/3 xs:w-1/2 relative border-2 border-gray-700  p-6 rounded-lg ${themeColor()}`} style={{height: "40vh"}}>
+          <div ref={moduleRef} className={`z-50 xl:w-1/3 xs:w-1/2 relative border-2 border-gray-700  p-6 rounded-lg ${themeColor()}`} style={{height: "40vh"}}>
           <button className="absolute top-0 right-0 rounded-full border border-red-600 xl:px-1 md:px-1 text-base text-red-600 bg-red-600 hover:bg-red-500 hover:text-gray-300 mx-3 my-2 antialiased shadow-xl focus:outline-none"
                   onClick={onHandleToggle}
                 >
